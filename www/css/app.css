@@ -1,0 +1,24 @@
+#fullpage {
+	overflow: hidden;
+	max-width: 100%;
+}
+
+#menu {
+	height: 100vh;
+	background-color: rgb(218, 218, 218);
+	padding-top: 1rem;
+	overflow: auto;
+}
+
+#main {
+	padding-top: 1rem;
+	overflow: auto;
+}
+
+.spacer {
+	height: 2rem;
+}
+
+.active-section {
+	color: black;
+}

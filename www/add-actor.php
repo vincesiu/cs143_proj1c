@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Movie Database - Search</title>
+  <title>Movie Database - Add Actor / Director</title>
   
   <!-- basic styling -->
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -18,12 +18,12 @@
 			<h1 id="menu-main-title">CS143 Movie Database System</h1>
 			<div class="spacer"></div>
 
-			<a href="search.php"><h3 class="active-section">Search Database</h3></a>
+			<a href="search.php"><h3>Search Database</h3></a>
 			<a href="browse-actors.php"><h3>Browse Actors</h3></a>
 			<a href="browse-movies.php"><h3>Browse Movies</h3></a>
 			<div class="spacer"></div>
 
-			<a href="add-actor.php"><h3>Add Actor or Director</h3></a>
+			<a href="add-actor.php"><h3 class="active-section">Add Actor or Director</h3></a>
 			<a href="add-movie.php"><h3>Add Movie</h3></a>
 			<a href="add-comments.php"><h3>Add Comments</h3></a>
 			<a href="add-actor-to-movie.php"><h3>Add Actor to Movie</h3></a>
@@ -32,7 +32,7 @@
 
 		<!-- Main Content Div -->
 		<div class="small-7 medium-8 large-9 columns" id="main">
-			<h2>Search Database</h2>
+			<h2>Add Actor / Director to Database</h2>
 			
 			<!-- TODO -->
 		</div>
