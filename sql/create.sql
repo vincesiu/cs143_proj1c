@@ -23,6 +23,7 @@ CREATE TABLE Actor(
         id int NOT NULL,
         last varchar(20),
         first varchar(20),
+        sex varchar(6),
         dob date,
         dod date,
         PRIMARY KEY(id),

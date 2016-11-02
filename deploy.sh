@@ -27,13 +27,16 @@ trap cleanup EXIT
 
 echo "Running deploy script..."
 
-### Reseting db
-echo "DROP TABLE IF EXISTS MovieDirector, MovieGenre, Review, MovieActor, MaxPersonID, MaxMovieID, Movie, Actor, Director"  | mysql TEST
-mysql TEST < ./sql/create.sql
-mysql TEST < ./sql/load.sql
 
 ### Deploying up webpages
 rsync -a ./www/* ~/www/
+
+if [[ "$1" == '--reset' ]]; then
+    ### Reseting db
+    echo "DROP TABLE IF EXISTS MovieDirector, MovieGenre, Review, MovieActor, MaxPersonID, MaxMovieID, Movie, Actor, Director"  | mysql CS143
+    mysql CS143 < ./sql/create.sql
+    mysql CS143 < ./sql/load.sql
+fi
 
 if [[ "$1" == '--submit' ]]; then
     mkdir 904280752
