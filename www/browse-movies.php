@@ -81,8 +81,10 @@
                             $director = '';
                             $first = false;
                         }
-                        else $director += ', ';
-                        $director += $row['first'] . ' ' . $row['last'];
+                        else { 
+                            $director .= ', ';
+                        }
+                        $director .= ($row['first'] . ' ' . $row['last']);
                     }
                 }
 
@@ -97,16 +99,21 @@
                         $genre = $row['genre'];
                     }
                 }
-
+                
                 $query4 = 'SELECT AVG(rating) FROM Review WHERE mid = ' . $id;
                 if (!$avgres = $mysqli->query($query4)) {
                     die('Unable to finish query');
                 }
                 if ($avgres->num_rows === 0) {
-                    $avgreview = "No reviews listed";
+                    
                 } else {
                     while ($row = $avgres->fetch_assoc()) {
-                        $avgreview = $row['AVG(rating)'];
+                        if ($row['AVG(rating)'] !== null) {
+                            $avgreview = $row['AVG(rating)'];
+                        }
+                        else {
+                            $avgreview = "No reviews listed";
+                        }
                     }
                 }
 
@@ -162,7 +169,7 @@
                     die('Unable to finish query');
                 }
                 if ($res->num_rows === 0) {
-                    echo '<p>No comments found.</p>';
+                    echo '<p>No reviews found.</p>';
                 }
                 else {
                     echo '<table style="margin-bottom: 1rem;">';
@@ -176,8 +183,8 @@
                         echo '</tr>';
                     }
                     echo '</table>';
-                    echo '<a href="add-comments.php?mid=' . $id . '"><p>Add review to movie</p></a>';
                 }
+                echo '<a href="add-comments.php?mid=' . $id . '"><p>Add review to movie</p></a>';
                 
             ?>
             </div>
