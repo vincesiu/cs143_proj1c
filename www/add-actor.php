@@ -45,11 +45,80 @@
 				Date of Death: (Leave blank if currently alive) <input type="text" name="dod">
 				<input type="submit" value="Submit">
 			</form>
+            <?php 
+            $temp = $_POST['title'];
+            if (isset($temp)) {
+                $out = $temp;
+            } else {
+                $out = '';
+            }
+            echo $out;
+            ?>
 
 			<div class="results">
-			
-			<?php
-					echo $_POST["actordirector"];
+			<?php 
+                include 'helper.php';
+
+                if (empty($_POST['first']) 
+                        && empty($_POST['last']) 
+                        && empty($_POST['dob']) 
+                        && empty($_POST['dod'])) 
+                {
+                    // Nothing was provided
+                    failure('Please fill out the form to add a movie');
+                } else if (!empty($_POST['title']) 
+                        && !empty($_POST['company']) 
+                        && !empty($_POST['year']) 
+                        && !empty($_POST['genre'])) 
+                {
+                    // All forms filled out
+                    $title = $_POST['title'];
+                    $company = $_POST['company'];
+                    $year = $_POST['year'];
+                    $genre = $_POST['genre'];
+                    $rating = $_POST['rating'];
+
+                    if (strlen($title) > 100) {
+                        failure('Please provide a title of less than 100 characters');
+                    }
+                    if (strlen($company) > 50) {
+                        failure('Please provide a company name of less than 50 characters');
+                    }
+                    if (!is_numeric($year)) {
+                        failure('Please provide a valid year');
+                    }
+                    if (strlen($genre) > 20) {
+                        failure('Please provide a genre name of less than 20 characters');
+                    }
+                $mysqli = new mysqli($host, $user, $pass, $db);
+                if ($mysqli->connect_error) {
+                    failure('Could not connect to db');
+                }
+
+                $query_update = 'UPDATE MaxMovieID SET id = id + 1';
+                $mysqli->query($query_update);
+                $query_id = 'SELECT id FROM MaxMovieID';
+                $res = $mysqli->query($query_id);
+                $row = $res->fetch_assoc();
+
+                
+                
+                $query_movie = 'INSERT INTO Movie VALUES (' . $row['id'] .  ', "' . $title . '", ' . $year . ', "' . $rating . '", "' . $company . '")';
+                if ($mysqli->query($query_movie)) {
+                    echo "Added movie to database successfully";
+                } else {
+                    echo "Could not add movie";
+                }
+                
+                $mysqli->close();
+
+                } else {
+                    // Not all forms filled out
+                    failure('Please fill out all fields');
+                }
+                    
+               
+
 			 ?>
 
 			</div>

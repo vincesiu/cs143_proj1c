@@ -150,7 +150,6 @@
                 } else {
                     // Not all forms filled out
                     failure('Please fill out all fields');
-
                 }
                     
                
