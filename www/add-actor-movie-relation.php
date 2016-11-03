@@ -95,7 +95,15 @@
                     $mysqli = new mysqli($host, $user, $pass, $db);
                     $query = 'INSERT INTO MovieActor VALUES (' . $mid . ', ' . $aid . ', "' . $role . '")';
                     if ($mysqli->query($query)) {
-                        echo "Successfully added actor to movie";
+                        $query = 'SELECT first,last,title FROM Actor, Movie WHERE Actor.id = ' . $aid . ' AND Movie.id = ' . $mid;
+                		if ($postinsertres = $mysqli->query($query)) {
+                			while ($row = $postinsertres->fetch_assoc()) {
+			                	echo 'Added ' . $row['first'] . ' ' . $row['last'] . ' as actor to movie titled ' . $row['title'] . ' in the role ' . $role;
+			                }
+                		}
+            			else {
+            				echo 'Actor added to movie';
+            			}
                     } else {
                         echo "Failed to add actor to movie";
                     }

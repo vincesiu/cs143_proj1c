@@ -90,15 +90,11 @@
 				                }
 	                		}
                 			else {
-                				echo 'second bit failed';
+                				echo 'Director added to movie';
                 			}
-                			// echo 'Insertion complete';
 	                	}
 					} else {
-						echo "hihihi";
 					}
-					
-					
 			 ?>
 
 			 </div>
