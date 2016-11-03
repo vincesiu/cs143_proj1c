@@ -34,3 +34,8 @@ th, td {
 .results {
 	margin-top: 0.5rem;
 }
+
+.bold.table {
+	font-weight: 600;
+	margin: 0;
+}

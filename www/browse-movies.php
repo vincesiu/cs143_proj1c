@@ -73,16 +73,15 @@
 
                 echo '<table>';
                 while ($row = $res->fetch_assoc()) {
-                    echo '<tr>';
-                    foreach ($fields as $field) {
-                        echo '<td>' . $row[$field] . '</td>';
-                    }
-                    echo '</tr>';
+                    echo '<tr><td><p class="bold table">Title</p></td><td>' . $row['title'] . '</td></tr>';
+                    echo '<tr><td><p class="bold table">Year</p></td><td>' . $row['year'] . '</td></tr>';
+                    echo '<tr><td><p class="bold table">Rating</p></td><td>' . $row['rating'] . '</td></tr>';
+                    echo '<tr><td><p class="bold table">Company</p></td><td>' . $row['company'] . '</td></tr>';
                 }
                 echo '</table>';
                 echo '</div><div class="results">';
 
-                $query = 'SELECT first, last, id FROM Actor, MovieActor WHERE MovieActor.mid = ' . $id . ' AND MovieActor.aid = Actor.id';
+                $query = 'SELECT first, last, id, role FROM Actor, MovieActor WHERE MovieActor.mid = ' . $id . ' AND MovieActor.aid = Actor.id';
 
                         
                 if (!$res = $mysqli->query($query)) {
@@ -95,11 +94,12 @@
                     echo '</div><div class="results">';
                     echo '<h2>Actors in this movie</h2>';
                     echo '<table>';
-                    echo '<tr><th>Name</th></tr>';
+                    echo '<tr><th>Name</th><th>Role</th></tr>';
                     while ($row = $res->fetch_assoc()) {
                         $link = 'browse-actors.php?id=' . $row['id'];
                         echo '<tr>';
                         echo '<td><a href="' . $link . '">' . $row['first'] . ' ' . $row['last'] . '</a></td>';
+                        echo '<td>' . $row['role'] . '</td>';
                         echo '</tr>';
                     }
                     echo '</table>';
