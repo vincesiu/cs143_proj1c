@@ -53,6 +53,7 @@
 				Your Name: <input type="text" name="name">
 				Rating:
 				<select name="rating">
+				  <option disabled selected value>Please select a rating</option>
 				  <option value="1">1</option>
 				  <option value="2">2</option>
 				  <option value="3">3</option>
@@ -66,8 +67,49 @@
 			<div class="results">
 			
 			<?php
-					echo $_POST["movieid"];
-					echo date('Y-m-d H:i:s',time());
+                    
+//                    if (empty($_POST["rating")) {
+//                        echo "I suck";
+//                    }
+
+					$id = $_POST["movieid"];
+
+                    if (empty($_POST["name"])) {
+                        $name = "Anonymous";
+                    } else {
+                        $name = $_POST["name"];
+                    }
+                    $review = $_POST['comment'];
+                    $timestamp = date('Y-m-d H:i:s', time());
+                    
+
+                    if (strlen($name) > 20) {
+                        failure('Please choose a number under 20 characters');
+                    }
+                    if (strlen($review) > 500) {
+                        failure('Please keep your comment under 500 characters');
+                    }
+
+                    echo "hi";
+
+                    $mysqli = new mysqli($host, $user, $pass, $db);
+                    $query = 'INSERT INTO Review VALUES ("' . $name . '", "' . $timestamp . '", ' . $id . ', ' . $rating . ', "' . $review .  '")';
+                    echo $query;
+
+                    echo "hi";
+                    if ($mysqli->connect_error) {
+                        failure('Could not connect to db');
+                    }
+
+                    echo "hi";
+                    if ($mysqli->query($query_person)) {
+                        echo "success";
+                        echo "Added review to database successfully";
+                    } else {
+                        echo "fail";
+                        echo "Failed to add review";
+                    }
+                    echo "hi";
 			 ?>
 
 			</div>
