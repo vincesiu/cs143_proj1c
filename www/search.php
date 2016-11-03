@@ -52,7 +52,7 @@
 
             $query = $_GET["query"];
             // strip whitespace
-            $query = preg_replace('/\s+/', '', $query);
+            $query = $query.trim();
 
             $mysqli = new mysqli('localhost', 'cs143', '', 'CS143');
 
@@ -64,29 +64,46 @@
 
                 // this is for debugging purposes, pls remove vincent
                 // if (count($query) > 0) {
+                $query_components = explode(' ', $query);
 
-                $query_actors = 'SELECT first, last FROM Actor WHERE last LIKE \'%hanks%\' OR first LIKE \'%hanks%\'';
+                $query_actors = 'SELECT first, last, dob, id FROM Actor WHERE ';
+                $query_movies = 'SELECT id,title FROM Movie WHERE ';
+
+                $first = true;
+                foreach ($query_components as $s) {
+                    $s = '\'%' . $s . '%\'';
+                    if ($first) {
+                        $first = false;
+                    } else {
+                        $query_actors .= ' OR ';
+                        $query_movies .= ' OR ';
+                    }
+
+                    $query_actors .= 'last LIKE ' . $s . ' OR first LIKE ' . $s;
+                    $query_movies .= 'title LIKE ' . $s;
+                }
+
                 $res_actors = $mysqli->query($query_actors);
                 echo '<div class="results">
                     <h2>Actor Results</h2>';
                 echo "<p>Query: " . $query_actors . "</p>"; // DEBUGGING ONLY
 
-                $fields = $res_actors->fetch_fields();
+                // $fields = $res_actors->fetch_fields();
                 echo "<table>";                
                 echo "<tr>
-                    <th>First</th>
-                    <th>Last</th>
+                    <th>Name</th>
+                    <th>Date of Birth</th>
                     </tr>";
                 while ($row = $res_actors->fetch_assoc()) {
                     echo "<tr>";
-                    foreach($fields as $field) {
-                        echo "<td>" . $row[ $field->name ] . "</td>";
-                    }
+                    echo '<td><a href="browse-actors.php?id=' . $row[ 'id' ] . '">' 
+                        . $row[ 'first' ] . ' ' . $row[ 'last' ] . "</a></td>";
+                    echo "<td>" . $row[ 'dob' ] . "</td>";
                     echo "</tr>";
                 }
                 echo "</table>";
+                
 
-                $query_movies = 'SELECT title FROM Movie WHERE title LIKE \'%hanks%\'';
                 $res_movies = $mysqli->query($query_movies);
                 echo '</div>
                     <div class="results">
@@ -94,7 +111,6 @@
                 echo "<p>Query: " . $query_movies . "</p>"; // DEBUGGING ONLY
                 
 
-                $fields = $res_movies->fetch_fields();
                 echo "<table>";                
                 echo "<tr>
                     <th>Title</th>
@@ -102,9 +118,8 @@
 
                 while ($row = $res_movies->fetch_assoc()) {
                     echo "<tr>";
-                    foreach($fields as $field) {
-                        echo "<td>" . $row[ $field->name ] . "</td>";
-                    }
+                    echo '<td><a href="browse-movies.php?id=' . $row[ 'id' ] . '">' 
+                        . $row[ 'title' ] . "</a></td>";
                     echo "</tr>";
                 }
                 echo "</table>
