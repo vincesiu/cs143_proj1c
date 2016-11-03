@@ -52,7 +52,53 @@
 			<div class="results">
 			
 			<?php 
-				echo $_POST["title"];
+                include 'helper.php';
+
+                if (empty($_POST['title']) 
+                        && empty($_POST['company']) 
+                        && empty($_POST['year']) 
+                        && empty($_POST['genre'])) 
+                {
+                    // Nothing was provided
+                    failure('Please fill out the form to add a movie');
+                    echo 'success error checking';
+                } else if (!empty($_POST['title']) 
+                        && !empty($_POST['company']) 
+                        && !empty($_POST['year']) 
+                        && !empty($_POST['genre'])) 
+                {
+                    // All forms filled out
+                    $title = $_POST['title'];
+                    $company = $_POST['company'];
+                    $year = $_POST['year'];
+                    $genre = $_POST['genre'];
+
+                    if (count($title) > 100) {
+                        failure('Please provide a title of less than 100 characters');
+                    }
+                    if (count($company) > 50) {
+                        failure('Please provide a company name of less than 50 characters');
+                    }
+                    if (!is_numeric($year)) {
+                        failure('Please provide a valid year');
+                    }
+                    if (count($genre) > 20) {
+                        failure('Please provide a genre name of less than 20 characters');
+                    echo "Success";
+                    }
+
+                } else {
+                    // Not all forms filled out
+                    failure('Please fill out all fields');
+
+                }
+                    
+               
+
+                $mysqli = new mysqli($host, $user, $pass, $db);
+                $query = 'INSERT INTO Movie VALUES (4751, "some_random_title", 2000, "somerating", "meowcompany")';
+                
+                $mysqli->close();
 			 ?>
 
 			</div>
