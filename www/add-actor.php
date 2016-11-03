@@ -149,9 +149,7 @@
                 } else {
                     $query_person = 'INSERT INTO Director VALUES (' . $id . ', "' . $last . '", "' . $first . '", "' . $dob . ', ' . $dod . ')';
                 }
-                echo $query_person;
                 
-//                $query_person = 'INSERT INTO Movie VALUES (' . $row['id'] .  ', "' . $title . '", ' . $year . ', "' . $rating . '", "' . $company . '")';
                 if ($mysqli->query($query_person)) {
                     echo "Added person to database successfully";
                 } else {
