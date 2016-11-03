@@ -32,12 +32,12 @@
 
 		<!-- Main Content Div -->
 		<div class="small-7 medium-8 large-9 columns" id="main">
-			<h2>Search Database</h2>
+			<h1>Search Database</h1>
 			
 			<!-- TODO -->
 
             <div>
-            <h1>Query</h1>
+            <h2>Query</h2>
             <form action="search.php" method="GET">
                 <input type="text" name="query" size="20">
                 <input type="submit" value="Search">
@@ -67,7 +67,8 @@
 
                 $query_actors = 'SELECT first, last FROM Actor WHERE last LIKE \'%hanks%\' OR first LIKE \'%hanks%\'';
                 $res_actors = $mysqli->query($query_actors);
-                echo "<h1>Actor Results</h1>";
+                echo '<div class="results">
+                    <h2>Actor Results</h2>';
                 echo "<p>Query: " . $query_actors . "</p>"; // DEBUGGING ONLY
 
                 $fields = $res_actors->fetch_fields();
@@ -87,7 +88,9 @@
 
                 $query_movies = 'SELECT title FROM Movie WHERE title LIKE \'%hanks%\'';
                 $res_movies = $mysqli->query($query_movies);
-                echo "<h1>Movie Results</h1>";
+                echo '</div>
+                    <div class="results">
+                    <h2>Movie Results</h2>';
                 echo "<p>Query: " . $query_movies . "</p>"; // DEBUGGING ONLY
                 
 
@@ -104,7 +107,8 @@
                     }
                     echo "</tr>";
                 }
-                echo "</table>";
+                echo "</table>
+                    </div>";
 
             }
             ?>          
