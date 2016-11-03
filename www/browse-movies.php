@@ -68,7 +68,7 @@
                     failure('Please provide a valid movie id');
                 }
 
-                $query2 = 'SELECT first,last FROM Director WHERE id = (SELECT did FROM MovieDirector WHERE mid = ' . $id . ')';
+                $query2 = 'SELECT first,last FROM Director JOIN (SELECT did FROM MovieDirector WHERE mid = ' . $id . ') AS Dids ON Director.id = Dids.did';
                 if (!$diretorres = $mysqli->query($query2)) {
                     die('Unable to finish query');
                 }

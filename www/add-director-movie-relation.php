@@ -75,9 +75,30 @@
 			<div class="results">
 			
 			<?php
-					echo $_POST["movieid"];
-					echo '<br/>';
-					echo $_POST["directorid"];
+					if (isset($_POST["movieid"]) && isset($_POST["directorid"])) {
+						$mid = $_POST["movieid"];
+						$did = $_POST["directorid"];
+
+						$query = 'INSERT INTO MovieDirector VAlUES (' . $mid . ',' . $did . ')';
+						if (!$insertres = $mysqli->query($query)) {
+	                    	echo 'Insertion failed';
+	                	} else {
+	                		$query = 'SELECT first,last,title FROM Director, Movie WHERE Director.id = ' . $did . ' AND Movie.id =' . $mid;
+	                		if ($postinsertres = $mysqli->query($query)) {
+	                			while ($row = $postinsertres->fetch_assoc()) {
+				                	echo 'Added ' . $row['first'] . ' ' . $row['last'] . ' as director for movie titled ' . $row['title'];
+				                }
+	                		}
+                			else {
+                				echo 'second bit failed';
+                			}
+                			// echo 'Insertion complete';
+	                	}
+					} else {
+						echo "hihihi";
+					}
+					
+					
 			 ?>
 
 			 </div>
