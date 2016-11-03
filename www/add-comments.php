@@ -71,10 +71,13 @@
 			<div class="results">
 			
 			<?php
+                    include 'helper.php';
                     
-//                    if (empty($_POST["rating")) {
-//                        echo "I suck";
-//                    }
+                    if (empty($_POST["rating"])) {
+                        failure("");
+                    }
+
+                    $rating = $_POST["rating"];
 
 					$id = $_POST["movieid"];
 
@@ -94,26 +97,20 @@
                         failure('Please keep your comment under 500 characters');
                     }
 
-                    echo "hi";
 
                     $mysqli = new mysqli($host, $user, $pass, $db);
                     $query = 'INSERT INTO Review VALUES ("' . $name . '", "' . $timestamp . '", ' . $id . ', ' . $rating . ', "' . $review .  '")';
                     echo $query;
 
-                    echo "hi";
                     if ($mysqli->connect_error) {
                         failure('Could not connect to db');
                     }
 
-                    echo "hi";
-                    if ($mysqli->query($query_person)) {
-                        echo "success";
+                    if ($mysqli->query($query)) {
                         echo "Added review to database successfully";
                     } else {
-                        echo "fail";
                         echo "Failed to add review";
                     }
-                    echo "hi";
 			 ?>
 
 			</div>
