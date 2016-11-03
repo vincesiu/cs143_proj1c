@@ -95,7 +95,7 @@
                     echo '</div><div class="results">';
                     echo '<h2>Actors in this movie</h2>';
                     echo '<table>';
-                    echo '<tr><th>Name</th></tr>'
+                    echo '<tr><th>Name</th></tr>';
                     while ($row = $res->fetch_assoc()) {
                         $link = 'browse-actors.php?id=' . $row['id'];
                         echo '<tr>';

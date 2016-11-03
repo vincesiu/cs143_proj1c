@@ -34,7 +34,28 @@
 		<div class="small-7 medium-8 large-9 columns" id="main">
 			<h2>Add Comments to Database</h2>
 			
-			<!-- TODO -->
+			<form action="add-comments.php" method="post" id="commentform">
+				Movie ID (TEMPORARY): <input type="text" name="id">
+				Your Name: <input type="text" name="name">
+				Rating:
+				<select name="rating">
+				  <option value="1">1</option>
+				  <option value="2">2</option>
+				  <option value="3">3</option>
+				  <option value="4">4</option>
+				  <option value="5">5</option>
+				</select>
+				<textarea name="comment" form="commentform" rows="5" placeholder="Enter rating body here..."></textarea>
+				<input type="submit" value="Submit">
+			</form>
+
+			<div class="results">
+			
+			<?php
+					echo $_POST["comment"];
+			 ?>
+
+			</div>
 		</div>
 	</div>
 
