@@ -33,21 +33,37 @@
 		<!-- Main Content Div -->
 		<div class="small-7 medium-8 large-9 columns" id="main">
 			<h2>Browse Actors</h2>
-			
+			<form action="search.php" method="GET">
+                <input type="text" name="query" size="20">
+                <input type="submit" value="Search">
+            </form>
+            <div class="results">
 			<!-- TODO -->
             <?php
-                include 'helper.php';
+                $debug = False;
+
+                if ($debug) {
+                    ini_set('display_startup_errors', 1);
+                    ini_set('display_errors', 1);
+                    error_reporting(-1);
+                }
+
+                function failure($err_msg) {
+                    echo $err_msg;
+                    exit();
+                }
 
                 $id = $_GET['id'];
 
                 if (empty($id)) {
-                    failure('Please provide an actor id');
+                    failure('Please provide an actor id.');
                 }
                 
+                $id = $_GET['id'];
                 $fields = array('id', 'first', 'last', 'sex', 'dob', 'dod');
 
                 if (!is_numeric($id)) {
-                    failure('Please provide a valid actor id');
+                    failure('Please provide a valid actor id.');
                 }
 
 
@@ -63,10 +79,10 @@
                     failure('Please provide a valid actor id');
                 }
 
-                echo '<div class="results">';
                 echo '<h2>Actor Information</h2>';
 
                 echo '<table>';
+                
                 while ($row = $res->fetch_assoc()) {
                     echo '<tr>';
                     foreach ($fields as $field) {
@@ -74,34 +90,32 @@
                     }
                     echo '</tr>';
                 }
-                echo '</table>';
-                echo '</div>';
+                echo '</table></div>';
 
                 $query = 'SELECT title, role, id FROM Movie, MovieActor WHERE MovieActor.aid = ' . $id . ' AND MovieActor.mid = Movie.id';
 
-                        
+                echo '<div class="results">';
                 if (!$res = $mysqli->query($query)) {
                     die('Unable to finish query');
                 }
                 if ($res->num_rows === 0) {
-                    echo '<h2>Not in any movies :(</h2>';
+                    echo 'Not in any movies :(';
                 }
                 else {
-                    echo '<div class="results">';
-                    echo '<h2>Movies that this actor has acted in: </h2>';
+                echo '<h2>Movies that this actor has acted in: </h2>';
                     echo '<table>';
                     while ($row = $res->fetch_assoc()) {
-                        $link = 'browse-movies.php?id=' . $row['id'];
+                        $link = './browse-movies.php?id=' . $row['id'];
                         echo '<tr>';
                         echo '<td><a href="' . $link . '">' . $row['title'] . '</a></td>';
                         echo '<td>' . $row['role'] . '</td>';
                         echo '</tr>';
                     }
                     echo '</table>';
-                    echo '</div>';
                 }
 
             ?>
+            </div>
 		</div>
 	</div>
 

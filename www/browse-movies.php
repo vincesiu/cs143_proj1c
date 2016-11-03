@@ -33,6 +33,11 @@
 		<!-- Main Content Div -->
 		<div class="small-7 medium-8 large-9 columns" id="main">
 			<h2>Browse Movies</h2>
+            <form action="search.php" method="GET">
+                <input type="text" name="query" size="20">
+                <input type="submit" value="Search">
+            </form>
+            <div class="results">
 			
 			<!-- TODO -->
             <?php
@@ -63,7 +68,7 @@
                     failure('Please provide a valid movie id');
                 }
 
-                echo '<div class="results">';
+                echo '</div><div class="results">';
                 echo '<h2>Movie Information</h2>';
 
                 echo '<table>';
@@ -75,7 +80,7 @@
                     echo '</tr>';
                 }
                 echo '</table>';
-                echo '</div>';
+                echo '</div><div class="results">';
 
                 $query = 'SELECT first, last, id FROM Actor, MovieActor WHERE MovieActor.mid = ' . $id . ' AND MovieActor.aid = Actor.id';
 
@@ -87,7 +92,7 @@
                     echo '<h2>No Actors in this movie :(</h2>';
                 }
                 else {
-                    echo '<div class="results">';
+                    echo '</div><div class="results">';
                     echo '<h2>Actors in this movie</h2>';
                     echo '<table>';
                     while ($row = $res->fetch_assoc()) {
@@ -101,7 +106,7 @@
                 }
 
                 $query = 'SELECT name, time, rating, comment FROM Review WHERE mid = ' . $id;
-                echo '<div class="commentssection">';
+                echo '<div class="results commentsection">';
                 echo '<h2>Comments Section</h2>';
 
                 while ($row = $res->fetch_assoc()) {
@@ -112,8 +117,9 @@
                     echo '<p>' . $row['comment'] . '</p>';
                     echo '</div>';
                 }
-                echo '</div>';
+                // echo '</div>';
             ?>
+            </div>
 		</div>
 	</div>
 
