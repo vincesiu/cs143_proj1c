@@ -94,7 +94,6 @@
 			<?php 
                 include 'helper.php';
 
-echo "hi";
                 if (empty($_POST['title']) 
                         && empty($_POST['company']) 
                         && empty($_POST['year']) 
@@ -107,13 +106,12 @@ echo "hi";
                         && !empty($_POST['year']) 
                         && !empty($_POST['genre'])) 
                 {
-                    echo "hi";
                     // All forms filled out
                     $title = $_POST['title'];
                     $company = $_POST['company'];
                     $year = $_POST['year'];
                     $genre = $_POST['genre'];
-                    echo "hi";
+                    $rating = $_POST['rating'];
 
                     if (strlen($title) > 100) {
                         failure('Please provide a title of less than 100 characters');
@@ -127,7 +125,27 @@ echo "hi";
                     if (strlen($genre) > 20) {
                         failure('Please provide a genre name of less than 20 characters');
                     }
-                    echo "Success";
+                $mysqli = new mysqli($host, $user, $pass, $db);
+                if ($mysqli->connect_error) {
+                    failure('Could not connect to db');
+                }
+
+                $query_update = 'UPDATE MaxMovieID SET id = id + 1';
+                $mysqli->query($query_update);
+                $query_id = 'SELECT id FROM MaxMovieID';
+                $res = $mysqli->query($query_id);
+                $row = $res->fetch_assoc();
+
+                
+                
+                $query_movie = 'INSERT INTO Movie VALUES (' . $row['id'] .  ', "' . $title . '", ' . $year . ', "' . $rating . '", "' . $company . '")';
+                if ($mysqli->query($query_movie)) {
+                    echo "Added movie to database successfully";
+                } else {
+                    echo "Could not add movie";
+                }
+                
+                $mysqli->close();
 
                 } else {
                     // Not all forms filled out
@@ -137,10 +155,6 @@ echo "hi";
                     
                
 
-                $mysqli = new mysqli($host, $user, $pass, $db);
-                $query = 'INSERT INTO Movie VALUES (4751, "some_random_title", 2000, "somerating", "meowcompany")';
-                
-                $mysqli->close();
 			 ?>
 
 			</div>
