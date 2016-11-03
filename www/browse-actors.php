@@ -44,9 +44,14 @@
                     error_reporting(-1);
                 }
 
+                function invalid_id() {
+                    echo "Invalid actor id";
+                }
+
                 
                 $id = $_GET["id"];
                 $fields = array("id", "first", "last", "sex", "dob", "dod");
+                $fields_movie = array("title", "role");
 
                 if (!empty($id) && is_numeric($id)) {
                     $query = "SELECT id, first, last, sex, dob, dod FROM Actor WHERE id = " . $id;
@@ -59,7 +64,7 @@
                         die('Unable to finish query');
                     }
                     if ($res->num_rows === 0) {
-                        echo "Error, invalid actor id provided";
+                        invalid_id();
                     }
                     else {
                         echo "<table>";
@@ -72,10 +77,30 @@
                         }
                         echo "</table>";
                     }
+
+                    $query = "SELECT title, role FROM Movie, MovieActor WHERE MovieActor.aid = " . $id . " AND MovieActor.mid = Movie.id";
+
                     
+                    if (!$res = $mysqli->query($query)) {
+                        die('Unable to finish query');
+                    }
+                    if ($res->num_rows === 0) {
+                        echo "Not in any movies :(";
+                    }
+                    else {
+                        echo "<table>";
+                        while ($row = $res->fetch_assoc()) {
+                            echo "<tr>";
+                            foreach ($fields_movie as $field) {
+                                echo "<td>" . $row[$field] . "</td>";
+                            }
+                            echo "</tr>";
+                        }
+                        echo "</table>";
+                    }
 
                 } else {
-                    echo "Invalid actor id provided.";
+                    invalid_id();
                 }
 
 
