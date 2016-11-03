@@ -54,7 +54,7 @@
 	                }
 				?>
 				</select>
-				Select Actor: <select name="directorid">
+				Select Director: <select name="directorid">
 				<?php
 					$query2 = 'SELECT id, first, last, dob FROM Director';
 	                $mysqli = new mysqli('localhost', 'cs143', '', 'CS143');
