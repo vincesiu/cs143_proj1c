@@ -38,70 +38,77 @@
 
             <div>
             <h1>Query</h1>
-            <form action="search.php" method="GET" id="queryform">
-                <textarea name="query" form="queryform" rows="8" cols="60"></textarea>
-                <input type="submit" value="Run Query">
+            <form action="search.php" method="GET">
+                <input type="text" name="query" size="20">
+                <input type="submit" value="Search">
             </form>
             </div>
 
-
-            <table>
             <?php
 
-            ini_set('display_startup_errors', 1);
-            ini_set('display_errors', 1);
-            error_reporting(-1);
+            // ini_set('display_startup_errors', 1);
+            // ini_set('display_errors', 1);
+            // error_reporting(-1);
 
             $query = $_GET["query"];
+            // strip whitespace
+            $query = preg_replace('/\s+/', '', $query);
 
             $mysqli = new mysqli('localhost', 'cs143', '', 'CS143');
 
-            if ($mysqli->connect_errno > 0) {
-                die('Unable to connect to database [' . $mysqli->connect_error . ']');
-            }
+            if ($query !== '') {
 
-            if (count($query) > 0) {
-            $query_actors = "SELECT first, last FROM Actor WHERE last LIKE '%hanks%' OR first LIKE '%hanks%'";
-            $res_actors = $mysqli->query($query_actors);
-            echo "<h1>Actor Query</h1>";
-            echo $query_actors;
+                if ($mysqli->connect_errno > 0) {
+                    die('Unable to connect to database [' . $mysqli->connect_error . ']');
+                }
 
+                // this is for debugging purposes, pls remove vincent
+                // if (count($query) > 0) {
 
-            $query_movies = "SELECT title FROM Movie WHERE title LIKE '%hanks%'";
+                $query_actors = 'SELECT first, last FROM Actor WHERE last LIKE \'%hanks%\' OR first LIKE \'%hanks%\'';
+                $res_actors = $mysqli->query($query_actors);
+                echo "<h1>Actor Results</h1>";
+                echo "<p>Query: " . $query_actors . "</p>"; // DEBUGGING ONLY
 
-            echo "<h1>Movie Query</h1>";
-            echo $query_movies;
-            $res_movies = $mysqli->query($query_movies);
-
-            $results = array($res_movies, $res_actors);
-
-
-            foreach($results as $res) {
-                $fields = $res->fetch_fields();
-
-                // put column names into table header cells
-//                echo "<tr>\n";
-//                foreach($fields as $field) {
-//                    echo "<th>" . $field->name . "</th>";
-//                }
-//                echo "\n</tr>\n";
-            
-                // fetch rows and place row data into table cells
-                while ($row = $res->fetch_assoc()) {
-                    echo "<tr>\n";
-                
+                $fields = $res_actors->fetch_fields();
+                echo "<table>";                
+                echo "<tr>
+                    <th>First</th>
+                    <th>Last</th>
+                    </tr>";
+                while ($row = $res_actors->fetch_assoc()) {
+                    echo "<tr>";
                     foreach($fields as $field) {
                         echo "<td>" . $row[ $field->name ] . "</td>";
                     }
-                
-                    echo "\n</tr>\n";
+                    echo "</tr>";
                 }
-            }
+                echo "</table>";
+
+                $query_movies = 'SELECT title FROM Movie WHERE title LIKE \'%hanks%\'';
+                $res_movies = $mysqli->query($query_movies);
+                echo "<h1>Movie Results</h1>";
+                echo "<p>Query: " . $query_movies . "</p>"; // DEBUGGING ONLY
+                
+
+                $fields = $res_movies->fetch_fields();
+                echo "<table>";                
+                echo "<tr>
+                    <th>Title</th>
+                    </tr>";
+
+                while ($row = $res_movies->fetch_assoc()) {
+                    echo "<tr>";
+                    foreach($fields as $field) {
+                        echo "<td>" . $row[ $field->name ] . "</td>";
+                    }
+                    echo "</tr>";
+                }
+                echo "</table>";
 
             }
-            ?>
-
-            </table>
+            ?>          
+ 
 
 		</div>
 	</div>
