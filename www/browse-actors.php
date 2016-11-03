@@ -49,14 +49,14 @@
                     exit();
                 }
 
-                $id = $_GET["id"];
+                $id = $_GET['id'];
 
                 if (empty($id)) {
                     failure('Please provide an actor id');
                 }
                 
-                $id = $_GET["id"];
-                $fields = array("id", "first", "last", "sex", "dob", "dod");
+                $id = $_GET['id'];
+                $fields = array('id', 'first', 'last', 'sex', 'dob', 'dod');
 
                 if (!is_numeric($id)) {
                     failure('Please provide a valid actor id');
@@ -74,6 +74,8 @@
                 if ($res->num_rows === 0) {
                     failure('Please provide a valid actor id');
                 }
+
+                echo '<h2>Actor Information</h2>';
 
                 echo '<table>';
                 while ($row = $res->fetch_assoc()) {
@@ -95,6 +97,7 @@
                     echo 'Not in any movies :(';
                 }
                 else {
+                echo '<h2>Movies that this actor has acted in: </h2>';
                     echo '<table>';
                     while ($row = $res->fetch_assoc()) {
                         $link = './browse-movies.php?id=' . $row['id'];
