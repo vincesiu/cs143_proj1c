@@ -34,7 +34,30 @@
 		<div class="small-7 medium-8 large-9 columns" id="main">
 			<h2>Add Movie to Database</h2>
 			
-			<!-- TODO -->
+			<form action="add-movie.php" method="post">
+				Title: <input type="text" name="title">
+				Company: <input type="text" name="company">
+				Year: <input type="text" name="year">
+				Rating: <select name="rating">
+				  <option value="G">G</option>
+				  <option value="NC-17">NC-17</option>
+				  <option value="PG">PG</option>
+				  <option value="PG-13">PG-13</option>
+				  <option value="R">R</option>
+				</select>
+				Genre: <input type="text" name="genre">
+				<input type="submit" value="Submit">
+			</form>
+
+			<div class="results">
+			
+			<?php 
+				echo $_POST["title"];
+			 ?>
+
+			</div>
+		
+
 		</div>
 	</div>
 
