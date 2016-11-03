@@ -63,6 +63,7 @@
                     failure('Please provide a valid movie id');
                 }
 
+                echo '<div class="results">';
                 echo '<h2>Movie Information</h2>';
 
                 echo '<table>';
@@ -74,6 +75,7 @@
                     echo '</tr>';
                 }
                 echo '</table>';
+                echo '</div>';
 
                 $query = 'SELECT first, last, id FROM Actor, MovieActor WHERE MovieActor.mid = ' . $id . ' AND MovieActor.aid = Actor.id';
 
@@ -85,7 +87,8 @@
                     echo '<h2>No Actors in this movie :(</h2>';
                 }
                 else {
-                echo '<h2>Movies that this actor has acted in: </h2>';
+                    echo '<div class="results">';
+                    echo '<h2>Actors in this movie</h2>';
                     echo '<table>';
                     while ($row = $res->fetch_assoc()) {
                         $link = 'browse-actors.php?id=' . $row['id'];
@@ -94,6 +97,7 @@
                         echo '</tr>';
                     }
                     echo '</table>';
+                    echo '</div>';
                 }
 
             ?>
