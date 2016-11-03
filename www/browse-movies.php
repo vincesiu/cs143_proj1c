@@ -79,20 +79,20 @@
                     echo '<tr><td><p class="bold table">Company</p></td><td>' . $row['company'] . '</td></tr>';
                 }
                 echo '</table>';
-                echo '</div><div class="results">';
+                echo '</div>';
 
                 $query = 'SELECT first, last, id, role FROM Actor, MovieActor WHERE MovieActor.mid = ' . $id . ' AND MovieActor.aid = Actor.id';
 
+                echo '<div class="results">';
+                echo '<h2>Actors in this movie</h2>';
                         
                 if (!$res = $mysqli->query($query)) {
                     die('Unable to finish query');
                 }
                 if ($res->num_rows === 0) {
-                    echo '<h2>No Actors in this movie :(</h2>';
+                    echo '<p>No actors found.</p>';
                 }
                 else {
-                    echo '</div><div class="results">';
-                    echo '<h2>Actors in this movie</h2>';
                     echo '<table>';
                     echo '<tr><th>Name</th><th>Role</th></tr>';
                     while ($row = $res->fetch_assoc()) {
@@ -103,8 +103,8 @@
                         echo '</tr>';
                     }
                     echo '</table>';
-                    echo '</div>';
                 }
+                echo '</div>';
 
                 $query = 'SELECT name, time, rating, comment FROM Review WHERE mid = ' . $id;
                 echo '<div class="results commentsection">';
