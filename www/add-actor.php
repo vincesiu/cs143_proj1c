@@ -37,16 +37,9 @@
 			<form action="add-actor.php" method="post">
 				<input type="radio" name="actordirector" value="actor" checked> Actor
   				<input type="radio" name="actordirector" value="director">Director<br/>
-				First Name: <input type="text" name="first">
-				Last Name: <input type="text" name="last">
-				<input type="radio" name="gender" value="male" checked> Male
-  				<input type="radio" name="gender" value="female"> Female <br/>
-				Date of Birth: (i.e. 1995-06-15) <input type="text" name="dob">
-				Date of Death: (Leave blank if currently alive) <input type="text" name="dod">
-				<input type="submit" value="Submit">
-			</form>
+				First Name: <input type="text" name="first" value=
             <?php 
-            $temp = $_POST['title'];
+            $temp = $_POST['first'];
             if (isset($temp)) {
                 $out = $temp;
             } else {
@@ -54,6 +47,44 @@
             }
             echo $out;
             ?>
+                >
+				Last Name: <input type="text" name="last" value=
+            <?php 
+            $temp = $_POST['last'];
+            if (isset($temp)) {
+                $out = $temp;
+            } else {
+                $out = '';
+            }
+            echo $out;
+            ?>
+                >
+				<input type="radio" name="gender" value="male" checked> Male
+  				<input type="radio" name="gender" value="female"> Female <br/>
+				Date of Birth: (i.e. 1995-06-15) <input type="text" name="dob" value=
+            <?php 
+            $temp = $_POST['dob'];
+            if (isset($temp)) {
+                $out = $temp;
+            } else {
+                $out = '';
+            }
+            echo $out;
+            ?>
+                >
+				Date of Death: (Leave blank if currently alive) <input type="text" name="dod" value=
+            <?php 
+            $temp = $_POST['dod'];
+            if (isset($temp)) {
+                $out = $temp;
+            } else {
+                $out = '';
+            }
+            echo $out;
+            ?>
+                >
+				<input type="submit" value="Submit">
+			</form>
 
 			<div class="results">
 			<?php 
@@ -65,47 +96,64 @@
                         && empty($_POST['dod'])) 
                 {
                     // Nothing was provided
-                    failure('Please fill out the form to add a movie');
-                } else if (!empty($_POST['title']) 
-                        && !empty($_POST['company']) 
-                        && !empty($_POST['year']) 
-                        && !empty($_POST['genre'])) 
+                    failure('Please fill out the form to add a person');
+                } else if (!empty($_POST['first']) 
+                        && !empty($_POST['last']) 
+                        && !empty($_POST['dob']))
                 {
                     // All forms filled out
-                    $title = $_POST['title'];
-                    $company = $_POST['company'];
-                    $year = $_POST['year'];
-                    $genre = $_POST['genre'];
-                    $rating = $_POST['rating'];
+                    $first = $_POST['first'];
+                    $last = $_POST['last'];
+                    $gender = $_POST['gender'];
+                    $dob = $_POST['dob'];
+                    if (preg_match('/[0-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]$/', $_POST['dob']) === 0) {
+                        failure("Please provide a valid date of birth");
+                    }
+                    $dob = '"' . $dob . '"';
+                    if (!empty($_POST['dod']) ) {
+                        if (preg_match('/[0-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]$/', $_POST['dod']) === 0) {
+                            failure("Please provide a valid date of death");
+                        }
+                        $dod = $_POST['dod'];
+                        $dod = '"' . $dod . '"';
+                    } else {
+                        $dod = "NULL";
+                    }
 
-                    if (strlen($title) > 100) {
-                        failure('Please provide a title of less than 100 characters');
+                    $actordirector = $_POST['actordirector'];
+
+                    if (strlen($first) > 20) {
+                        failure('Please provide a first name of less than 20 characters');
                     }
-                    if (strlen($company) > 50) {
-                        failure('Please provide a company name of less than 50 characters');
+                    if (strlen($last) > 20) {
+                        failure('Please provide a last name of less than 20 characters');
                     }
-                    if (!is_numeric($year)) {
-                        failure('Please provide a valid year');
-                    }
-                    if (strlen($genre) > 20) {
-                        failure('Please provide a genre name of less than 20 characters');
-                    }
+
+
                 $mysqli = new mysqli($host, $user, $pass, $db);
                 if ($mysqli->connect_error) {
                     failure('Could not connect to db');
                 }
 
-                $query_update = 'UPDATE MaxMovieID SET id = id + 1';
+                
+                $query_update = 'UPDATE MaxPersonID SET id = id + 1';
                 $mysqli->query($query_update);
-                $query_id = 'SELECT id FROM MaxMovieID';
+                $query_id = 'SELECT id FROM MaxPersonID';
                 $res = $mysqli->query($query_id);
                 $row = $res->fetch_assoc();
+                $id = $row['id'];
 
                 
+                if (strcmp($actordirector, 'actor') === 0 ) {
+                    $query_person = 'INSERT INTO Actor VALUES (' . $id . ', "' . $last . '", "' . $first . '", "' . $gender . '", ' . $dob . ', ' . $dod . ')';
+                } else {
+                    $query_person = 'INSERT INTO Director VALUES (' . $id . ', "' . $last . '", "' . $first . '", "' . $dob . ', ' . $dod . ')';
+                }
+                echo $query_person;
                 
-                $query_movie = 'INSERT INTO Movie VALUES (' . $row['id'] .  ', "' . $title . '", ' . $year . ', "' . $rating . '", "' . $company . '")';
-                if ($mysqli->query($query_movie)) {
-                    echo "Added movie to database successfully";
+//                $query_person = 'INSERT INTO Movie VALUES (' . $row['id'] .  ', "' . $title . '", ' . $year . ', "' . $rating . '", "' . $company . '")';
+                if ($mysqli->query($query_person)) {
+                    echo "Added person to database successfully";
                 } else {
                     echo "Could not add movie";
                 }
