@@ -40,18 +40,7 @@
             <div class="results">
 			<!-- TODO -->
             <?php
-                $debug = False;
-
-                if ($debug) {
-                    ini_set('display_startup_errors', 1);
-                    ini_set('display_errors', 1);
-                    error_reporting(-1);
-                }
-
-                function failure($err_msg) {
-                    echo $err_msg;
-                    exit();
-                }
+                include 'helper.php';
 
                 $id = $_GET['id'];
 
