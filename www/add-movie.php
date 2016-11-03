@@ -35,9 +35,39 @@
 			<h2>Add Movie to Database</h2>
 			
 			<form action="add-movie.php" method="post">
-				Title: <input type="text" name="title">
-				Company: <input type="text" name="company">
-				Year: <input type="text" name="year">
+				Title: <input type="text" name="title" value=
+            <?php 
+            $temp = $_POST['title'];
+            if (isset($temp)) {
+                $out = $temp;
+            } else {
+                $out = '';
+            }
+            echo $out;
+            ?>
+                >
+				Company: <input type="text" name="company" value=
+            <?php 
+            $temp = $_POST['company'];
+            if (isset($temp)) {
+                $out = $temp;
+            } else {
+                $out = '';
+            }
+            echo $out;
+            ?>
+                >
+				Year: <input type="text" name="year" value=
+            <?php 
+            $temp = $_POST['year'];
+            if (isset($temp)) {
+                $out = $temp;
+            } else {
+                $out = '';
+            }
+            echo $out;
+            ?>
+                >
 				Rating: <select name="rating">
 				  <option value="G">G</option>
 				  <option value="NC-17">NC-17</option>
@@ -45,14 +75,72 @@
 				  <option value="PG-13">PG-13</option>
 				  <option value="R">R</option>
 				</select>
-				Genre: <input type="text" name="genre">
+				Genre: <input type="text" name="genre" value=
+            <?php 
+            $temp = $_POST['genre'];
+            if (isset($temp)) {
+                $out = $temp;
+            } else {
+                $out = '';
+            }
+            echo $out;
+            ?>
+                >
 				<input type="submit" value="Submit">
 			</form>
 
 			<div class="results">
 			
 			<?php 
-				echo $_POST["title"];
+                include 'helper.php';
+
+echo "hi";
+                if (empty($_POST['title']) 
+                        && empty($_POST['company']) 
+                        && empty($_POST['year']) 
+                        && empty($_POST['genre'])) 
+                {
+                    // Nothing was provided
+                    failure('Please fill out the form to add a movie');
+                } else if (!empty($_POST['title']) 
+                        && !empty($_POST['company']) 
+                        && !empty($_POST['year']) 
+                        && !empty($_POST['genre'])) 
+                {
+                    echo "hi";
+                    // All forms filled out
+                    $title = $_POST['title'];
+                    $company = $_POST['company'];
+                    $year = $_POST['year'];
+                    $genre = $_POST['genre'];
+                    echo "hi";
+
+                    if (strlen($title) > 100) {
+                        failure('Please provide a title of less than 100 characters');
+                    }
+                    if (strlen($company) > 50) {
+                        failure('Please provide a company name of less than 50 characters');
+                    }
+                    if (!is_numeric($year)) {
+                        failure('Please provide a valid year');
+                    }
+                    if (strlen($genre) > 20) {
+                        failure('Please provide a genre name of less than 20 characters');
+                    }
+                    echo "Success";
+
+                } else {
+                    // Not all forms filled out
+                    failure('Please fill out all fields');
+
+                }
+                    
+               
+
+                $mysqli = new mysqli($host, $user, $pass, $db);
+                $query = 'INSERT INTO Movie VALUES (4751, "some_random_title", 2000, "somerating", "meowcompany")';
+                
+                $mysqli->close();
 			 ?>
 
 			</div>

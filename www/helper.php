@@ -14,4 +14,8 @@ function failure($err_msg) {
     exit();
 }
 
+$host = 'localhost';
+$user = 'cs143';
+$pass = '';
+$db = 'CS143';
 ?>
