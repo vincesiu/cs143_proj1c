@@ -34,7 +34,51 @@
 		<div class="small-7 medium-8 large-9 columns" id="main">
 			<h2>Add Actor to Movie</h2>
 			
-			<!-- TODO -->
+			<form action="add-actor-movie-relation.php" method="post">
+				Select Movie: <select name="movieid">
+				<?php 
+					$query1 = 'SELECT id, title, year FROM Movie';
+	                $mysqli = new mysqli('localhost', 'cs143', '', 'CS143');
+	                if ($mysqli->connect_errno > 0) {
+	                    // do something
+	                }
+	                if (!$res1 = $mysqli->query($query1)) {
+	                    // do something
+	                }
+	                while ($row = $res1->fetch_assoc()) {
+	                	echo '<option value="' . $row['id'] . '">' . $row['title'] . ' (' . $row['year'] . ')</option>';
+	                }
+				?>
+				</select>
+				Select Actor: <select name="actorid">
+				<?php 
+					$query2 = 'SELECT id, first, last, dob FROM Actor';
+	                $mysqli = new mysqli('localhost', 'cs143', '', 'CS143');
+	                if ($mysqli->connect_errno > 0) {
+	                    // do something
+	                }
+	                if (!$res2 = $mysqli->query($query2)) {
+	                    // do something
+	                }
+	                while ($row = $res2->fetch_assoc()) {
+	                	echo '<option value="' . $row['id'] . '">' . $row['first'] . ' ' . $row['last'] . ' (' . $row['dob'] . ')</option>';
+	                }
+				?>
+				</select>
+				Role: <input type="text" name="role">
+				<input type="submit" value="Submit">
+			</form>
+
+			<div class="results">
+			
+			<?php
+					echo $_POST["movieid"];
+					echo '<br/>';
+					echo $_POST["actorid"];
+			 ?>
+
+			</div>
+
 		</div>
 	</div>
 
