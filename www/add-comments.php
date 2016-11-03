@@ -100,7 +100,6 @@
 
                     $mysqli = new mysqli($host, $user, $pass, $db);
                     $query = 'INSERT INTO Review VALUES ("' . $name . '", "' . $timestamp . '", ' . $id . ', ' . $rating . ', "' . $review .  '")';
-                    echo $query;
 
                     if ($mysqli->connect_error) {
                         failure('Could not connect to db');
