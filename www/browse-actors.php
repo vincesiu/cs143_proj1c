@@ -73,11 +73,13 @@
                 echo '<table>';
                 
                 while ($row = $res->fetch_assoc()) {
-                    echo '<tr>';
-                    foreach ($fields as $field) {
-                        echo '<td>' . $row[$field] . '</td>';
-                    }
-                    echo '</tr>';
+                    echo '<tr><td><p class="bold table">Name</p></td><td>' . $row['first'] . ' ' . $row['last'] . '</td></tr>';
+                    echo '<tr><td><p class="bold table">Sex</p></td><td>' . $row['sex'] . '</td></tr>';
+                    echo '<tr><td><p class="bold table">Date of Birth</p></td><td>' . $row['dob'] . '</td></tr>';
+                    echo '<tr><td><p class="bold table">Date of Death</p></td><td>';
+                    if ($row['dod'] === null) echo 'Actor is still alive';
+                    else echo $row['dod'];
+                    echo '</td></tr>';
                 }
                 echo '</table></div>';
 
@@ -93,6 +95,7 @@
                 else {
                 echo '<h2>Movies that this actor has acted in: </h2>';
                     echo '<table>';
+                    echo '<tr><th>Title</th><th>Role</th></tr>';
                     while ($row = $res->fetch_assoc()) {
                         $link = './browse-movies.php?id=' . $row['id'];
                         echo '<tr>';
