@@ -44,65 +44,67 @@
                     error_reporting(-1);
                 }
 
-                function invalid_id() {
-                    echo "Invalid actor id";
+                function failure($err_msg) {
+                    echo $err_msg;
+                    exit();
                 }
 
+                $id = $_GET["id"];
+
+                if (empty($id)) {
+                    failure('Please provide an actor id');
+                }
                 
                 $id = $_GET["id"];
                 $fields = array("id", "first", "last", "sex", "dob", "dod");
-                $fields_movie = array("title", "role");
 
-                if (!empty($id) && is_numeric($id)) {
-                    $query = "SELECT id, first, last, sex, dob, dod FROM Actor WHERE id = " . $id;
-
-                    $mysqli = new mysqli('localhost', 'cs143', '', 'CS143');
-                    if ($mysqli->connect_errno > 0) {
-                        die('Unable to connect to database [' . $mysqli->connect_error . ']');
-                    }
-                    if (!$res = $mysqli->query($query)) {
-                        die('Unable to finish query');
-                    }
-                    if ($res->num_rows === 0) {
-                        invalid_id();
-                    }
-                    else {
-                        echo "<table>";
-                        while ($row = $res->fetch_assoc()) {
-                            echo "<tr>";
-                            foreach ($fields as $field) {
-                                echo "<td>" . $row[$field] . "</td>";
-                            }
-                            echo "</tr>";
-                        }
-                        echo "</table>";
-                    }
-
-                    $query = "SELECT title, role FROM Movie, MovieActor WHERE MovieActor.aid = " . $id . " AND MovieActor.mid = Movie.id";
-
-                    
-                    if (!$res = $mysqli->query($query)) {
-                        die('Unable to finish query');
-                    }
-                    if ($res->num_rows === 0) {
-                        echo "Not in any movies :(";
-                    }
-                    else {
-                        echo "<table>";
-                        while ($row = $res->fetch_assoc()) {
-                            echo "<tr>";
-                            foreach ($fields_movie as $field) {
-                                echo "<td>" . $row[$field] . "</td>";
-                            }
-                            echo "</tr>";
-                        }
-                        echo "</table>";
-                    }
-
-                } else {
-                    invalid_id();
+                if (!is_numeric($id)) {
+                    failure('Please provide a valid actor id');
                 }
 
+
+                $query = 'SELECT id, first, last, sex, dob, dod FROM Actor WHERE id = ' . $id;
+                $mysqli = new mysqli('localhost', 'cs143', '', 'CS143');
+                if ($mysqli->connect_errno > 0) {
+                    failure('Unable to connect to database');
+                }
+                if (!$res = $mysqli->query($query)) {
+                    failure('Could not query database');
+                }
+                if ($res->num_rows === 0) {
+                    failure('Please provide a valid actor id');
+                }
+
+                echo '<table>';
+                while ($row = $res->fetch_assoc()) {
+                    echo '<tr>';
+                    foreach ($fields as $field) {
+                        echo '<td>' . $row[$field] . '</td>';
+                    }
+                    echo '</tr>';
+                }
+                echo '</table>';
+
+                $query = 'SELECT title, role, id FROM Movie, MovieActor WHERE MovieActor.aid = ' . $id . ' AND MovieActor.mid = Movie.id';
+
+                        
+                if (!$res = $mysqli->query($query)) {
+                    die('Unable to finish query');
+                }
+                if ($res->num_rows === 0) {
+                    echo 'Not in any movies :(';
+                }
+                else {
+                    echo '<table>';
+                    while ($row = $res->fetch_assoc()) {
+                        $link = './browse-movies.php?id=' . $row['id'];
+                        echo '<tr>';
+                        echo '<td><a href="' . $link . '">' . $row['title'] . '</a></td>';
+                        echo '<td>' . $row['role'] . '</td>';
+                        echo '</tr>';
+                    }
+                    echo '</table>';
+                }
 
             ?>
 		</div>
