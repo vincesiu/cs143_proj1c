@@ -35,6 +35,51 @@
 			<h2>Browse Actors</h2>
 			
 			<!-- TODO -->
+            <?php
+                $debug = True;
+
+                if ($debug) {
+                    ini_set('display_startup_errors', 1);
+                    ini_set('display_errors', 1);
+                    error_reporting(-1);
+                }
+
+                
+                $id = $_GET["id"];
+                $fields = array("id", "first", "last", "sex", "dob", "dod");
+
+                if (!empty($id) && is_numeric($id)) {
+                    $query = "SELECT id, first, last, sex, dob, dod FROM Actor WHERE id = " . $id;
+
+                    $mysqli = new mysqli('localhost', 'cs143', '', 'CS143');
+                    if ($mysqli->connect_errno > 0) {
+                        die('Unable to connect to database [' . $mysqli->connect_error . ']');
+                    }
+                    if (!$res = $mysqli->query($query)) {
+                        die('Unable to finish query');
+                    }
+                    if ($res->num_rows === 0) {
+                        echo "Error, invalid actor id provided";
+                    }
+                    else {
+                        echo "<table>";
+                        while ($row = $res->fetch_assoc()) {
+                            echo "<tr>";
+                            foreach ($fields as $field) {
+                                echo "<td>" . $row[$field] . "</td>";
+                            }
+                            echo "</tr>";
+                        }
+                        echo "</table>";
+                    }
+                    
+
+                } else {
+                    echo "Invalid actor id provided.";
+                }
+
+
+            ?>
 		</div>
 	</div>
 
