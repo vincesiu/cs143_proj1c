@@ -35,7 +35,8 @@
 			<h2>Add Comments to Database</h2>
 			
 			<form action="add-comments.php" method="post" id="commentform">
-				Select Movie: <select name="movieid"><?php 
+				Select Movie: <select name="movieid">
+				<?php 
 					$query = 'SELECT id, title, year FROM Movie';
 	                $mysqli = new mysqli('localhost', 'cs143', '', 'CS143');
 	                if ($mysqli->connect_errno > 0) {
@@ -47,7 +48,7 @@
 	                while ($row = $res->fetch_assoc()) {
 	                	echo '<option value="' . $row['id'] . '">' . $row['title'] . ' (' . $row['year'] . ')</option>';
 	                }
-				 ?>
+				?>
 				</select>
 				Your Name: <input type="text" name="name">
 				Rating:
@@ -66,6 +67,7 @@
 			
 			<?php
 					echo $_POST["movieid"];
+					echo date('Y-m-d H:i:s',time());
 			 ?>
 
 			</div>
