@@ -68,6 +68,36 @@
                     failure('Please provide a valid movie id');
                 }
 
+                $query2 = 'SELECT first,last FROM Director WHERE id = (SELECT did FROM MovieDirector WHERE mid = ' . $id . ')';
+                if (!$diretorres = $mysqli->query($query2)) {
+                    die('Unable to finish query');
+                }
+                if ($diretorres->num_rows === 0) {
+                    $director = "No director listed";
+                } else {
+                    $first = true;
+                    while ($row = $diretorres->fetch_assoc()) {
+                        if ($first) { 
+                            $director = '';
+                            $first = false;
+                        }
+                        else $director += ', ';
+                        $director += $row['first'] . ' ' . $row['last'];
+                    }
+                }
+
+                $query3 = 'SELECT genre FROM MovieGenre WHERE mid = ' . $id;
+                if (!$genreres = $mysqli->query($query3)) {
+                    die('Unable to finish query');
+                }
+                if ($genreres->num_rows === 0) {
+                    $genre = "No genre listed";
+                } else {
+                    while ($row = $genreres->fetch_assoc()) {
+                        $genre = $row['genre'];
+                    }
+                }
+
                 echo '</div><div class="results">';
                 echo '<h2>Movie Information</h2>';
 
@@ -77,8 +107,12 @@
                     echo '<tr><td><p class="bold table">Year</p></td><td>' . $row['year'] . '</td></tr>';
                     echo '<tr><td><p class="bold table">Rating</p></td><td>' . $row['rating'] . '</td></tr>';
                     echo '<tr><td><p class="bold table">Company</p></td><td>' . $row['company'] . '</td></tr>';
+                    echo '<tr><td><p class="bold table">Director</p></td><td>' . $director . '</td></tr>';
+                    echo '<tr><td><p class="bold table">Genre</p></td><td>' . $genre . '</td></tr>';
                 }
                 echo '</table>';
+
+                echo '<a href="add-director-movie-relation.php?mid=' . $id . '"><p>Add director to movie</p></a>';
                 echo '</div>';
 
                 $query = 'SELECT first, last, id, role FROM Actor, MovieActor WHERE MovieActor.mid = ' . $id . ' AND MovieActor.aid = Actor.id';
@@ -104,6 +138,7 @@
                     }
                     echo '</table>';
                 }
+                echo '<a href="add-actor-movie-relation.php?mid=' . $id . '"><p>Add actor to movie</p></a>';
                 echo '</div>';
 
                 $query = 'SELECT name, time, rating, comment FROM Review WHERE mid = ' . $id;

@@ -71,8 +71,10 @@
                 echo '<h2>Actor Information</h2>';
 
                 echo '<table>';
-                
+
+                $actorid = null;
                 while ($row = $res->fetch_assoc()) {
+                    $actorid = $row['id'];
                     echo '<tr><td><p class="bold table">Name</p></td><td>' . $row['first'] . ' ' . $row['last'] . '</td></tr>';
                     echo '<tr><td><p class="bold table">Sex</p></td><td>' . $row['sex'] . '</td></tr>';
                     echo '<tr><td><p class="bold table">Date of Birth</p></td><td>' . $row['dob'] . '</td></tr>';
@@ -93,6 +95,7 @@
                     echo 'Not in any movies :(';
                 }
                 else {
+                
                 echo '<h2>Movies that this actor has acted in: </h2>';
                     echo '<table>';
                     echo '<tr><th>Title</th><th>Role</th></tr>';
@@ -107,6 +110,12 @@
                 }
 
             ?>
+            </div>
+
+            <div class="results">
+                <?php 
+                    echo '<a href="./add-actor-movie-relation.php?aid=' . $actorid . '"><p>Add actor to movie</p></a>';
+                 ?>
             </div>
 		</div>
 	</div>
