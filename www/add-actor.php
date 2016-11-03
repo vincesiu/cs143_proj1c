@@ -26,8 +26,8 @@
 			<a href="add-actor.php"><h3 class="active-section">Add Actor or Director</h3></a>
 			<a href="add-movie.php"><h3>Add Movie</h3></a>
 			<a href="add-comments.php"><h3>Add Comments</h3></a>
-			<a href="add-actor-to-movie.php"><h3>Add Actor to Movie</h3></a>
-			<a href="add-director-to-movie.php"><h3>Add Director to Movie</h3></a>
+			<a href="add-actor-movie-relation.php"><h3>Add Actor to Movie</h3></a>
+			<a href="add-director-movie-relation.php"><h3>Add Director to Movie</h3></a>
 		</div>
 
 		<!-- Main Content Div -->
