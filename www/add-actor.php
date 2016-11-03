@@ -34,7 +34,25 @@
 		<div class="small-7 medium-8 large-9 columns" id="main">
 			<h2>Add Actor / Director to Database</h2>
 			
-			<!-- TODO -->
+			<form action="add-actor.php" method="post">
+				<input type="radio" name="actordirector" value="actor" checked> Actor
+  				<input type="radio" name="actordirector" value="director">Director<br/>
+				First Name: <input type="text" name="first">
+				Last Name: <input type="text" name="last">
+				<input type="radio" name="gender" value="male" checked> Male
+  				<input type="radio" name="gender" value="female"> Female <br/>
+				Date of Birth: (i.e. 1995-06-15) <input type="text" name="dob">
+				Date of Death: (Leave blank if currently alive) <input type="text" name="dod">
+				<input type="submit" value="Submit">
+			</form>
+
+			<div class="results">
+			
+			<?php
+					echo $_POST["actordirector"];
+			 ?>
+
+			</div>
 		</div>
 	</div>
 
