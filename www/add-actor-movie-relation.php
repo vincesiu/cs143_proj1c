@@ -81,9 +81,24 @@
 			<div class="results">
 			
 			<?php
-					echo $_POST["movieid"];
-					echo '<br/>';
-					echo $_POST["actorid"];
+                    include 'helper.php';
+
+					$mid = $_POST["movieid"];
+					$aid = $_POST["actorid"];
+                    if (empty($_POST["role"])){
+                        failure("Please provide a role for the actor");
+                    }
+                    $role = $_POST["role"];
+                    if (strlen($role) > 50) {
+                        failure("Please describe the role in less than 50 characters");
+                    }
+                    $mysqli = new mysqli($host, $user, $pass, $db);
+                    $query = 'INSERT INTO MovieActor VALUES (' . $mid . ', ' . $aid . ', "' . $role . '")';
+                    if ($mysqli->query($query)) {
+                        echo "Successfully added actor to movie";
+                    } else {
+                        echo "Failed to add actor to movie";
+                    }
 			 ?>
 
 			</div>
