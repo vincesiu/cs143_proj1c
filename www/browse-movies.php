@@ -98,10 +98,22 @@
                     }
                 }
 
+                $query4 = 'SELECT AVG(rating) FROM Review WHERE mid = ' . $id;
+                if (!$avgres = $mysqli->query($query4)) {
+                    die('Unable to finish query');
+                }
+                if ($avgres->num_rows === 0) {
+                    $avgreview = "No reviews listed";
+                } else {
+                    while ($row = $avgres->fetch_assoc()) {
+                        $avgreview = $row['AVG(rating)'];
+                    }
+                }
+
                 echo '</div><div class="results">';
                 echo '<h2>Movie Information</h2>';
 
-                echo '<table>';
+                echo '<table style="margin-bottom: 1rem;">';
                 while ($row = $res->fetch_assoc()) {
                     echo '<tr><td><p class="bold table">Title</p></td><td>' . $row['title'] . '</td></tr>';
                     echo '<tr><td><p class="bold table">Year</p></td><td>' . $row['year'] . '</td></tr>';
@@ -109,6 +121,7 @@
                     echo '<tr><td><p class="bold table">Company</p></td><td>' . $row['company'] . '</td></tr>';
                     echo '<tr><td><p class="bold table">Director</p></td><td>' . $director . '</td></tr>';
                     echo '<tr><td><p class="bold table">Genre</p></td><td>' . $genre . '</td></tr>';
+                    echo '<tr><td><p class="bold table">Average Rating</p></td><td>' . $avgreview . '</td></tr>';
                 }
                 echo '</table>';
 
@@ -127,7 +140,7 @@
                     echo '<p>No actors found.</p>';
                 }
                 else {
-                    echo '<table>';
+                    echo '<table style="margin-bottom: 1rem;">';
                     echo '<tr><th>Name</th><th>Role</th></tr>';
                     while ($row = $res->fetch_assoc()) {
                         $link = 'browse-actors.php?id=' . $row['id'];
@@ -144,16 +157,28 @@
                 $query = 'SELECT name, time, rating, comment FROM Review WHERE mid = ' . $id;
                 echo '<div class="results commentsection">';
                 echo '<h2>Comments Section</h2>';
-
-                while ($row = $res->fetch_assoc()) {
-                    echo '<div class="comment">';
-                    echo '<p>' . $row['name'] . '</p>';
-                    echo '<p>' . $row['time'] . '</p>';
-                    echo '<p>' . $row['rating'] . '</p>';
-                    echo '<p>' . $row['comment'] . '</p>';
-                    echo '</div>';
+                
+                if (!$res = $mysqli->query($query)) {
+                    die('Unable to finish query');
                 }
-                // echo '</div>';
+                if ($res->num_rows === 0) {
+                    echo '<p>No comments found.</p>';
+                }
+                else {
+                    echo '<table style="margin-bottom: 1rem;">';
+                    echo '<tr><th>Name</th><th>Time</th><th>Rating</th><th>Review</th></tr>';
+                    while ($row = $res->fetch_assoc()) {
+                        echo '<tr>';
+                        echo '<td>' . $row['name'] . '</td>';
+                        echo '<td>' . $row['time'] . '</td>';
+                        echo '<td>' . $row['rating'] . '</td>';
+                        echo '<td>' . $row['comment'] . '</td>';
+                        echo '</tr>';
+                    }
+                    echo '</table>';
+                    echo '<a href="add-comments.php?mid=' . $id . '"><p>Add review to movie</p></a>';
+                }
+                
             ?>
             </div>
 		</div>
