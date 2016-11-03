@@ -37,12 +37,16 @@
 			<form action="add-actor-movie-relation.php" method="post">
 				Select Movie: <select name="movieid">
 				<?php 
-					$query1 = 'SELECT id, title, year FROM Movie';
-	                $mysqli = new mysqli('localhost', 'cs143', '', 'CS143');
-	                if ($mysqli->connect_errno > 0) {
+					if (isset($_GET['mid'])) {
+						$query1 = 'SELECT id, title, year FROM Movie WHERE id = ' . $_GET['mid'];
+					} else {
+						$query1 = 'SELECT id, title, year FROM Movie';
+					}
+	                $mysqli1 = new mysqli('localhost', 'cs143', '', 'CS143');
+	                if ($mysqli1->connect_errno > 0) {
 	                    // do something
 	                }
-	                if (!$res1 = $mysqli->query($query1)) {
+	                if (!$res1 = $mysqli1->query($query1)) {
 	                    // do something
 	                }
 	                while ($row = $res1->fetch_assoc()) {
@@ -52,12 +56,17 @@
 				</select>
 				Select Actor: <select name="actorid">
 				<?php 
-					$query2 = 'SELECT id, first, last, dob FROM Actor';
-	                $mysqli = new mysqli('localhost', 'cs143', '', 'CS143');
-	                if ($mysqli->connect_errno > 0) {
+					if (isset($_GET['aid'])) {
+						$query2 = 'SELECT id, first, last, dob FROM Actor WHERE id = ' . $_GET['aid'];
+					} else {
+						$query2 = 'SELECT id, first, last, dob FROM Actor';
+					}
+					
+	                $mysqli2 = new mysqli('localhost', 'cs143', '', 'CS143');
+	                if ($mysqli2->connect_errno > 0) {
 	                    // do something
 	                }
-	                if (!$res2 = $mysqli->query($query2)) {
+	                if (!$res2 = $mysqli2->query($query2)) {
 	                    // do something
 	                }
 	                while ($row = $res2->fetch_assoc()) {

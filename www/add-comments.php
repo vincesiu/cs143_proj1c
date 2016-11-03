@@ -37,7 +37,11 @@
 			<form action="add-comments.php" method="post" id="commentform">
 				Select Movie: <select name="movieid">
 				<?php 
-					$query = 'SELECT id, title, year FROM Movie';
+					if (isset($_GET['mid'])) {
+						$query = 'SELECT id, title, year FROM Movie WHERE id = ' . $_GET['mid'];
+					} else {
+						$query = 'SELECT id, title, year FROM Movie';
+					}
 	                $mysqli = new mysqli('localhost', 'cs143', '', 'CS143');
 	                if ($mysqli->connect_errno > 0) {
 	                    // do something
