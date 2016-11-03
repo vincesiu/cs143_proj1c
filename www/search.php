@@ -46,6 +46,8 @@
 
             <?php
 
+            $debug = false;
+
             // ini_set('display_startup_errors', 1);
             // ini_set('display_errors', 1);
             // error_reporting(-1);
@@ -53,6 +55,8 @@
             $query = $_GET["query"];
             // strip whitespace
             $query = $query.trim();
+
+
 
             $mysqli = new mysqli('localhost', 'cs143', '', 'CS143');
 
@@ -66,64 +70,73 @@
                 // if (count($query) > 0) {
                 $query_components = explode(' ', $query);
 
-                $query_actors = 'SELECT first, last, dob, id FROM Actor WHERE ';
-                $query_movies = 'SELECT id,title FROM Movie WHERE ';
+                $query_actors = 'SELECT DISTINCT first, last, dob, id FROM Actor WHERE ';
+                $query_movies = 'SELECT DISTINCT id,title FROM Movie WHERE ';
 
                 $first = true;
+
                 foreach ($query_components as $s) {
                     $s = '\'%' . $s . '%\'';
                     if ($first) {
                         $first = false;
                     } else {
-                        $query_actors .= ' OR ';
-                        $query_movies .= ' OR ';
+                        $query_actors .= ' AND ';
+                        $query_movies .= ' AND ';
                     }
 
-                    $query_actors .= 'last LIKE ' . $s . ' OR first LIKE ' . $s;
-                    $query_movies .= 'title LIKE ' . $s;
+                    $query_actors .= '(last LIKE ' . $s . ' OR first LIKE ' . $s . ')';
+                    $query_movies .= '(title LIKE ' . $s . ')';
                 }
 
                 $res_actors = $mysqli->query($query_actors);
                 echo '<div class="results">
                     <h2>Actor Results</h2>';
-                echo "<p>Query: " . $query_actors . "</p>"; // DEBUGGING ONLY
+                if ($debug) echo "<p>Query: " . $query_actors . "</p>";
 
                 // $fields = $res_actors->fetch_fields();
-                echo "<table>";                
-                echo "<tr>
-                    <th>Name</th>
-                    <th>Date of Birth</th>
-                    </tr>";
-                while ($row = $res_actors->fetch_assoc()) {
-                    echo "<tr>";
-                    echo '<td><a href="browse-actors.php?id=' . $row[ 'id' ] . '">' 
-                        . $row[ 'first' ] . ' ' . $row[ 'last' ] . "</a></td>";
-                    echo "<td>" . $row[ 'dob' ] . "</td>";
-                    echo "</tr>";
+                if (mysqli_num_rows($res_actors) >= 1 ) {
+                    echo "<table>";                
+                    echo "<tr>
+                        <th>Name</th>
+                        <th>Date of Birth</th>
+                        </tr>";
+                    while ($row = $res_actors->fetch_assoc()) {
+                        echo "<tr>";
+                        echo '<td><a href="browse-actors.php?id=' . $row[ 'id' ] . '">' 
+                            . $row[ 'first' ] . ' ' . $row[ 'last' ] . "</a></td>";
+                        echo "<td>" . $row[ 'dob' ] . "</td>";
+                        echo "</tr>";
+                    }
+                    echo "</table>";
+                } else {
+                    echo "<p>No actors found</p>";
                 }
-                echo "</table>";
                 
 
                 $res_movies = $mysqli->query($query_movies);
                 echo '</div>
                     <div class="results">
                     <h2>Movie Results</h2>';
-                echo "<p>Query: " . $query_movies . "</p>"; // DEBUGGING ONLY
+                if ($debug) echo "<p>Query: " . $query_movies . "</p>"; // DEBUGGING ONLY
                 
+                if (mysqli_num_rows($res_movies) >= 1 ) {
+                    echo "<table>";                
+                    echo "<tr>
+                        <th>Title</th>
+                        </tr>";
 
-                echo "<table>";                
-                echo "<tr>
-                    <th>Title</th>
-                    </tr>";
-
-                while ($row = $res_movies->fetch_assoc()) {
-                    echo "<tr>";
-                    echo '<td><a href="browse-movies.php?id=' . $row[ 'id' ] . '">' 
-                        . $row[ 'title' ] . "</a></td>";
-                    echo "</tr>";
+                    while ($row = $res_movies->fetch_assoc()) {
+                        echo "<tr>";
+                        echo '<td><a href="browse-movies.php?id=' . $row[ 'id' ] . '">' 
+                            . $row[ 'title' ] . "</a></td>";
+                        echo "</tr>";
+                    }
+                    echo "</table>";
+                } else {
+                    echo "<p>No movies found</p>";
                 }
-                echo "</table>
-                    </div>";
+
+                echo "</div>";
 
             }
             ?>          
