@@ -35,6 +35,68 @@
 			<h2>Browse Movies</h2>
 			
 			<!-- TODO -->
+            <?php
+                include 'helper.php';
+
+                $id = $_GET['id'];
+
+                if (empty($id)) {
+                    failure('Please provide a movie id');
+                }
+                
+                $fields = array('id', 'title', 'year', 'rating', 'company');
+
+                if (!is_numeric($id)) {
+                    failure('Please provide a valid movie id');
+                }
+
+
+                $query = 'SELECT id, title, year, rating, company FROM Movie WHERE id = ' . $id;
+                $mysqli = new mysqli('localhost', 'cs143', '', 'CS143');
+                if ($mysqli->connect_errno > 0) {
+                    failure('Unable to connect to database');
+                }
+                if (!$res = $mysqli->query($query)) {
+                    failure('Could not query database');
+                }
+                if ($res->num_rows === 0) {
+                    failure('Please provide a valid movie id');
+                }
+
+                echo '<h2>Movie Information</h2>';
+
+                echo '<table>';
+                while ($row = $res->fetch_assoc()) {
+                    echo '<tr>';
+                    foreach ($fields as $field) {
+                        echo '<td>' . $row[$field] . '</td>';
+                    }
+                    echo '</tr>';
+                }
+                echo '</table>';
+
+                $query = 'SELECT first, last, id FROM Actor, MovieActor WHERE MovieActor.mid = ' . $id . ' AND MovieActor.aid = Actor.id';
+
+                        
+                if (!$res = $mysqli->query($query)) {
+                    die('Unable to finish query');
+                }
+                if ($res->num_rows === 0) {
+                    echo '<h2>No Actors in this movie :(</h2>';
+                }
+                else {
+                echo '<h2>Movies that this actor has acted in: </h2>';
+                    echo '<table>';
+                    while ($row = $res->fetch_assoc()) {
+                        $link = 'browse-actors.php?id=' . $row['id'];
+                        echo '<tr>';
+                        echo '<td><a href="' . $link . '">' . $row['first'] . ' ' . $row['last'] . '</a></td>';
+                        echo '</tr>';
+                    }
+                    echo '</table>';
+                }
+
+            ?>
 		</div>
 	</div>
 

@@ -36,18 +36,7 @@
 			
 			<!-- TODO -->
             <?php
-                $debug = True;
-
-                if ($debug) {
-                    ini_set('display_startup_errors', 1);
-                    ini_set('display_errors', 1);
-                    error_reporting(-1);
-                }
-
-                function failure($err_msg) {
-                    echo $err_msg;
-                    exit();
-                }
+                include 'helper.php';
 
                 $id = $_GET['id'];
 
@@ -55,7 +44,6 @@
                     failure('Please provide an actor id');
                 }
                 
-                $id = $_GET['id'];
                 $fields = array('id', 'first', 'last', 'sex', 'dob', 'dod');
 
                 if (!is_numeric($id)) {
@@ -94,13 +82,13 @@
                     die('Unable to finish query');
                 }
                 if ($res->num_rows === 0) {
-                    echo 'Not in any movies :(';
+                    echo '<h2>Not in any movies :(</h2>';
                 }
                 else {
                 echo '<h2>Movies that this actor has acted in: </h2>';
                     echo '<table>';
                     while ($row = $res->fetch_assoc()) {
-                        $link = './browse-movies.php?id=' . $row['id'];
+                        $link = 'browse-movies.php?id=' . $row['id'];
                         echo '<tr>';
                         echo '<td><a href="' . $link . '">' . $row['title'] . '</a></td>';
                         echo '<td>' . $row['role'] . '</td>';
