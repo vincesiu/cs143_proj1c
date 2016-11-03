@@ -45,7 +45,7 @@
                 $id = $_GET['id'];
 
                 if (empty($id)) {
-                    failure('Please provide an actor id.');
+                    failure('');
                 }
                 
                 $id = $_GET['id'];

@@ -46,7 +46,7 @@
                 $id = $_GET['id'];
 
                 if (empty($id)) {
-                    failure('Please provide a movie id');
+                    failure('');
                 }
                 
                 $fields = array('id', 'title', 'year', 'rating', 'company');
