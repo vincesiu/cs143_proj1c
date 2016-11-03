@@ -100,6 +100,19 @@
                     echo '</div>';
                 }
 
+                $query = 'SELECT name, time, rating, comment FROM Review WHERE mid = ' . $id;
+                echo '<div class="commentssection">';
+                echo '<h2>Comments Section</h2>';
+
+                while ($row = $res->fetch_assoc()) {
+                    echo '<div class="comment">';
+                    echo '<p>' . $row['name'] . '</p>';
+                    echo '<p>' . $row['time'] . '</p>';
+                    echo '<p>' . $row['rating'] . '</p>';
+                    echo '<p>' . $row['comment'] . '</p>';
+                    echo '</div>';
+                }
+                echo '</div>';
             ?>
 		</div>
 	</div>
