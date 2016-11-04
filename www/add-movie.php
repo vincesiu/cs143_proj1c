@@ -117,7 +117,7 @@
                     $title = $_POST['title'];
                     $company = $_POST['company'];
                     $year = $_POST['year'];
-                    $genre = $_POST['genre'];
+                    $genres = $_POST['genre'];
                     $rating = $_POST['rating'];
 
                     if (strlen($title) > 100) {
@@ -128,9 +128,6 @@
                     }
                     if (!is_numeric($year)) {
                         failure('Please provide a valid year');
-                    }
-                    if (strlen($genre) > 20) {
-                        failure('Please provide a genre name of less than 20 characters');
                     }
                 $mysqli = new mysqli($host, $user, $pass, $db);
                 if ($mysqli->connect_error) {
@@ -151,6 +148,19 @@
                 } else {
                     echo "Could not add movie";
                 }
+
+                /*
+                if (!empty($genres)) {
+                    foreach($genres as $genre) {
+                        $query = 'INSERT INTO MovieGenre Values(' . $row['id'] . ', "' . $genre . '")';
+                        if ($mysqli->query($query_movie)) {
+                            echo "Added genre to database successfully";
+                        } else {
+                            echo "Could not add genre";
+                        }
+                    }
+                }
+                */
                 
                 $mysqli->close();
 
