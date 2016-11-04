@@ -75,17 +75,24 @@
 				  <option value="PG-13">PG-13</option>
 				  <option value="R">R</option>
 				</select>
-				Genre: <input type="text" name="genre" value=
-            <?php 
-            $temp = $_POST['genre'];
-            if (isset($temp)) {
-                $out = $temp;
-            } else {
-                $out = '';
-            }
-            echo $out;
-            ?>
-                >
+                Genre: <?php 
+                    $genrelist = array('Action','Adult','Adventure','Animation','Comedy','Crime','Documentary','Drama','Family','Fantasy','Horror','Musical','Mystery','Romance','Sci-Fi','Short','Thriller','War','Western');
+                    $temp = $_POST['genre'];
+                    if (isset($temp)) {
+                        $previous = $temp;
+                    } else {
+                        $previous = 'Action';
+                    }
+                    
+                    foreach ($genrelist as $genreitem) {
+                        echo '<input type="radio" name="genre" value="' . $genreitem . '"';
+                        if (strcmp($genreitem, $previous) === 0) {
+                            echo ' checked';
+                        }
+                        echo '> ' . $genreitem;
+                    }
+                    echo '<br/>';
+                ?>
 				<input type="submit" value="Submit">
 			</form>
 
