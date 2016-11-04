@@ -32,13 +32,11 @@
 
 		<!-- Main Content Div -->
 		<div class="small-7 medium-8 large-9 columns" id="main">
-			<h1>Search Database</h1>
+			<h2>Search Database</h2>
 			
-			<!-- TODO -->
-
             <div>
-            <h2>Query</h2>
             <form action="search.php" method="GET">
+                Enter actor name or movie title
                 <input type="text" name="query" size="20">
                 <input type="submit" value="Search">
             </form>
