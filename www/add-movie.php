@@ -145,22 +145,22 @@
                 $query_movie = 'INSERT INTO Movie VALUES (' . $row['id'] .  ', "' . $title . '", ' . $year . ', "' . $rating . '", "' . $company . '")';
                 if ($mysqli->query($query_movie)) {
                     echo "Added movie to database successfully";
+                    echo "</br>";
                 } else {
-                    echo "Could not add movie";
+                    failure( "Could not add movie");
                 }
 
-                /*
                 if (!empty($genres)) {
                     foreach($genres as $genre) {
-                        $query = 'INSERT INTO MovieGenre Values(' . $row['id'] . ', "' . $genre . '")';
-                        if ($mysqli->query($query_movie)) {
+                        $query = 'INSERT INTO MovieGenre VALUES(' . $row['id'] . ', "' . $genre . '")';
+                        if ($mysqli->query($query)) {
                             echo "Added genre to database successfully";
+                            echo "</br>";
                         } else {
-                            echo "Could not add genre";
+                            failure("Could not add genre");
                         }
                     }
                 }
-                */
                 
                 $mysqli->close();
 
