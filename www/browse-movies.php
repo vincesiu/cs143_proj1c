@@ -95,8 +95,15 @@
                 if ($genreres->num_rows === 0) {
                     $genre = "No genre listed";
                 } else {
+                    $first = true;
                     while ($row = $genreres->fetch_assoc()) {
-                        $genre = $row['genre'];
+                        if ($first) {
+                            $genre = '';
+                            $first = false;
+                        } else {
+                            $genre .= ', ';
+                        }
+                        $genre .= $row['genre'];
                     }
                 }
                 
