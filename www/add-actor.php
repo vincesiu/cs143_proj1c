@@ -147,13 +147,16 @@
                 if (strcmp($actordirector, 'actor') === 0 ) {
                     $query_person = 'INSERT INTO Actor VALUES (' . $id . ', "' . $last . '", "' . $first . '", "' . $gender . '", ' . $dob . ', ' . $dod . ')';
                 } else {
-                    $query_person = 'INSERT INTO Director VALUES (' . $id . ', "' . $last . '", "' . $first . '", "' . $dob . ', ' . $dod . ')';
+                    $query_person = 'INSERT INTO Director VALUES (' . $id . ', "' . $last . '", "' . $first . '", ' . $dob . ', ' . $dod . ')';
                 }
+
+
                 
                 if ($mysqli->query($query_person)) {
                     echo "Added person to database successfully";
                 } else {
-                    echo "Could not add movie";
+                    echo $query_person;
+                    echo "Could not add person";
                 }
                 
                 $mysqli->close();
