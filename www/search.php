@@ -69,7 +69,7 @@
                 $query_components = explode(' ', $query);
 
                 $query_actors = 'SELECT DISTINCT first, last, dob, id FROM Actor WHERE ';
-                $query_movies = 'SELECT DISTINCT id,title FROM Movie WHERE ';
+                $query_movies = 'SELECT DISTINCT id,title,year FROM Movie WHERE ';
 
                 $first = true;
 
@@ -121,12 +121,14 @@
                     echo "<table>";                
                     echo "<tr>
                         <th>Title</th>
+                        <th>Year</th>
                         </tr>";
 
                     while ($row = $res_movies->fetch_assoc()) {
                         echo "<tr>";
                         echo '<td><a href="browse-movies.php?id=' . $row[ 'id' ] . '">' 
                             . $row[ 'title' ] . "</a></td>";
+                        echo '<td>' . $row[ 'year' ] . '</td>';
                         echo "</tr>";
                     }
                     echo "</table>";
