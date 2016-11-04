@@ -81,12 +81,12 @@
                     if (isset($temp)) {
                         $previous = $temp;
                     } else {
-                        $previous = 'Action';
+                        $previous = array();
                     }
                     
                     foreach ($genrelist as $genreitem) {
-                        echo '<input type="radio" name="genre" value="' . $genreitem . '"';
-                        if (strcmp($genreitem, $previous) === 0) {
+                        echo '<input type="checkbox" name="genre[]" value="' . $genreitem . '"';
+                        if (in_array($genreitem, $previous)) {
                             echo ' checked';
                         }
                         echo '> ' . $genreitem;
