@@ -78,10 +78,9 @@
                     echo '<tr><td><p class="bold table">Name</p></td><td>' . $row['first'] . ' ' . $row['last'] . '</td></tr>';
                     echo '<tr><td><p class="bold table">Sex</p></td><td>' . $row['sex'] . '</td></tr>';
                     echo '<tr><td><p class="bold table">Date of Birth</p></td><td>' . $row['dob'] . '</td></tr>';
-                    echo '<tr><td><p class="bold table">Date of Death</p></td><td>';
-                    if ($row['dod'] === null) echo 'Actor is still alive';
-                    else echo $row['dod'];
-                    echo '</td></tr>';
+                    if ($row['dod'] !== null) {
+                        echo '<tr><td><p class="bold table">Date of Death</p></td><td>' . $row['dod'] . '</td></tr>';
+                    }
                 }
                 echo '</table></div>';
 
