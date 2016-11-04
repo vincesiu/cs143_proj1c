@@ -31,6 +31,14 @@ echo "Running deploy script..."
 ### Deploying up webpages
 rsync -a ./www/* ~/www/
 
+FILE_LIST=$(echo t{1..5}.html)
+for file in $FILE_LIST; do
+    if [[ -e $file ]]; then
+        cp ~/www/$file ~/cs143_proj1c/testcase/
+    fi
+done
+
+
 if [[ "$1" == '--reset' ]]; then
     ### Reseting db
     echo "DROP TABLE IF EXISTS MovieDirector, MovieGenre, Review, MovieActor, MaxPersonID, MaxMovieID, Movie, Actor, Director"  | mysql CS143
